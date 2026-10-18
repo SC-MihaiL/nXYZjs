@@ -6,6 +6,7 @@
 
 #include <qjs.h>
 #include <njs.h> /* NJS_VERSION */
+#include <njs_unix.h>
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -45,7 +46,9 @@ typedef struct {
 } qjs_encoding_label_t;
 
 
+#if !NJS_WINDOWS
 extern char  **environ;
+#endif
 
 
 static int qjs_add_intrinsic_btoa_atob(JSContext *cx, JSValueConst global);
@@ -84,27 +87,65 @@ static JSValue qjs_text_encoder_encode_into(JSContext *ctx,
 static JSValue qjs_text_encoder_encoding(JSContext *ctx, JSValueConst this_val);
 
 
-/* P1990 signals from `man 7 signal` are supported */
+/* P1990 signals from `man 7 signal` are supported. */
 static qjs_signal_entry_t qjs_signals_table[] = {
+#ifdef SIGABRT
     { njs_str("ABRT"), SIGABRT },
+#endif
+#ifdef SIGALRM
     { njs_str("ALRM"), SIGALRM },
+#endif
+#ifdef SIGCHLD
     { njs_str("CHLD"), SIGCHLD },
+#endif
+#ifdef SIGCONT
     { njs_str("CONT"), SIGCONT },
+#endif
+#ifdef SIGFPE
     { njs_str("FPE"),  SIGFPE  },
+#endif
+#ifdef SIGHUP
     { njs_str("HUP"),  SIGHUP  },
+#endif
+#ifdef SIGILL
     { njs_str("ILL"),  SIGILL  },
+#endif
+#ifdef SIGINT
     { njs_str("INT"),  SIGINT  },
+#endif
+#ifdef SIGKILL
     { njs_str("KILL"), SIGKILL },
+#endif
+#ifdef SIGPIPE
     { njs_str("PIPE"), SIGPIPE },
+#endif
+#ifdef SIGQUIT
     { njs_str("QUIT"), SIGQUIT },
+#endif
+#ifdef SIGSEGV
     { njs_str("SEGV"), SIGSEGV },
+#endif
+#ifdef SIGSTOP
     { njs_str("STOP"), SIGSTOP },
+#endif
+#ifdef SIGTSTP
     { njs_str("TSTP"), SIGTSTP },
+#endif
+#ifdef SIGTERM
     { njs_str("TERM"), SIGTERM },
+#endif
+#ifdef SIGTTIN
     { njs_str("TTIN"), SIGTTIN },
+#endif
+#ifdef SIGTTOU
     { njs_str("TTOU"), SIGTTOU },
+#endif
+#ifdef SIGUSR1
     { njs_str("USR1"), SIGUSR1 },
+#endif
+#ifdef SIGUSR2
     { njs_str("USR2"), SIGUSR2 },
+#endif
     { njs_null_str, 0 }
 };
 

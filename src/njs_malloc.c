@@ -55,8 +55,46 @@ njs_memalign(size_t alignment, size_t size)
     return memalign(alignment, size);
 }
 
+#elif (defined(_WIN32) || defined(_WIN64))
+
+/*
+ * Windows (MSVC and MinGW) has no posix_memalign()/memalign(), but
+ * provides _aligned_malloc()/_aligned_free() in <malloc.h>.  Note that
+ * memory returned by _aligned_malloc() MUST be released via
+ * _aligned_free(), plain free() is not safe for it.  All njs call sites
+ * that free njs_memalign()'ed memory use njs_memalign_free() below
+ * instead of njs_free()/free() for that reason.
+ */
+
+#include <malloc.h>
+
+void *
+njs_memalign(size_t alignment, size_t size)
+{
+    return _aligned_malloc(size, alignment);
+}
+
 #else
 
 #error no memalign() implementation.
+
+#endif
+
+
+#if (defined(_WIN32) || defined(_WIN64))
+
+void
+njs_memalign_free(void *p)
+{
+    _aligned_free(p);
+}
+
+#else
+
+void
+njs_memalign_free(void *p)
+{
+    njs_free(p);
+}
 
 #endif

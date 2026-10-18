@@ -1300,7 +1300,7 @@ njs_object_make_shared(njs_vm_t *vm, njs_object_t *object)
     njs_int_t             ret;
     njs_arr_t             visited;
     njs_object_t          **start;
-    njs_value_t           value, *key;
+    njs_value_t           value = { 0 }, *key;
     njs_traverse_t        *s;
     njs_object_prop_t     *prop, *obj_prop;
     njs_property_query_t  pq;
@@ -1444,7 +1444,7 @@ njs_object_traverse(njs_vm_t *vm, njs_object_t *object, void *ctx,
     njs_int_t             ret;
     njs_arr_t             visited;
     njs_object_t          **start;
-    njs_value_t           value, *key;
+    njs_value_t           value = { 0 }, *key;
     njs_traverse_t        *s;
     njs_object_prop_t     *prop;
     njs_property_query_t  pq;

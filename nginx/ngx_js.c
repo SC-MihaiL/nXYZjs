@@ -9,7 +9,10 @@
 #include <ngx_config.h>
 #include <ngx_core.h>
 #include <math.h>
+#include <njs_unix.h>
+#if (NJS_HAVE_QUICKJS)
 #include <dlfcn.h>
+#endif
 #include "ngx_js.h"
 #include "ngx_js_http.h"
 
@@ -527,7 +530,7 @@ ngx_create_engine(ngx_engine_opts_t *opts)
     ngx_int_t      rc;
     ngx_engine_t  *engine;
 
-    mp = njs_mp_fast_create(2 * getpagesize(), 128, 512, 16);
+    mp = njs_mp_fast_create(2 * njs_pagesize(), 128, 512, 16);
     if (mp == NULL) {
         return NULL;
     }
@@ -1108,7 +1111,7 @@ ngx_qjs_clone(ngx_js_ctx_t *ctx, ngx_js_loc_conf_t *cf, void *external)
     ngx_engine_t         *engine;
     ngx_js_code_entry_t  *pc;
 
-    mp = njs_mp_fast_create(2 * getpagesize(), 128, 512, 16);
+    mp = njs_mp_fast_create(2 * njs_pagesize(), 128, 512, 16);
     if (mp == NULL) {
         return NULL;
     }
@@ -4173,7 +4176,11 @@ ngx_js_module_path(const ngx_str_t *dir, njs_module_info_t *info)
     p = (char *) njs_cpymem(p, info->name.start, info->name.length);
     *p = '\0';
 
+#if (NJS_WINDOWS)
+    p = _fullpath(&info->path[0], &src[0], sizeof(info->path));
+#else
     p = realpath(&src[0], &info->path[0]);
+#endif
     if (p == NULL) {
         return NJS_DECLINED;
     }
@@ -4730,12 +4737,16 @@ ngx_js_core_create_conf(ngx_cycle_t *cycle)
 void
 ngx_js_native_module_cleanup(void *data)
 {
+#if (NJS_HAVE_QUICKJS)
     void  *handle = data;
 
     if (dlclose(handle) != 0) {
         ngx_log_error(NGX_LOG_ALERT, ngx_cycle->log, 0,
                       "dlclose() failed: %s", dlerror());
     }
+#else
+    (void) data;
+#endif
 }
 
 

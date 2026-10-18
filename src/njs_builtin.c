@@ -93,27 +93,65 @@ static const njs_object_type_init_t *const
 };
 
 
-/* P1990 signals from `man 7 signal` are supported */
+/* P1990 signals from `man 7 signal` are supported. */
 static njs_signal_entry_t njs_signals_table[] = {
+#ifdef SIGABRT
     { njs_str("ABRT"), SIGABRT },
+#endif
+#ifdef SIGALRM
     { njs_str("ALRM"), SIGALRM },
+#endif
+#ifdef SIGCHLD
     { njs_str("CHLD"), SIGCHLD },
+#endif
+#ifdef SIGCONT
     { njs_str("CONT"), SIGCONT },
+#endif
+#ifdef SIGFPE
     { njs_str("FPE"),  SIGFPE  },
+#endif
+#ifdef SIGHUP
     { njs_str("HUP"),  SIGHUP  },
+#endif
+#ifdef SIGILL
     { njs_str("ILL"),  SIGILL  },
+#endif
+#ifdef SIGINT
     { njs_str("INT"),  SIGINT  },
+#endif
+#ifdef SIGKILL
     { njs_str("KILL"), SIGKILL },
+#endif
+#ifdef SIGPIPE
     { njs_str("PIPE"), SIGPIPE },
+#endif
+#ifdef SIGQUIT
     { njs_str("QUIT"), SIGQUIT },
+#endif
+#ifdef SIGSEGV
     { njs_str("SEGV"), SIGSEGV },
+#endif
+#ifdef SIGSTOP
     { njs_str("STOP"), SIGSTOP },
+#endif
+#ifdef SIGTSTP
     { njs_str("TSTP"), SIGTSTP },
+#endif
+#ifdef SIGTERM
     { njs_str("TERM"), SIGTERM },
+#endif
+#ifdef SIGTTIN
     { njs_str("TTIN"), SIGTTIN },
+#endif
+#ifdef SIGTTOU
     { njs_str("TTOU"), SIGTTOU },
+#endif
+#ifdef SIGUSR1
     { njs_str("USR1"), SIGUSR1 },
+#endif
+#ifdef SIGUSR2
     { njs_str("USR2"), SIGUSR2 },
+#endif
     { njs_null_str, 0 }
 };
 

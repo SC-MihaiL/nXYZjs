@@ -25,13 +25,29 @@
 #include <sys/types.h>
 #include <stdint.h>
 
+#if defined(_WIN32) || defined(__MINGW32__) || defined(__MINGW64__)
+/* MinGW's sys/types.h, unlike glibc, does not provide these BSD aliases. */
+#ifndef _U_CHAR_DEFINED
+typedef unsigned char   u_char;
+typedef unsigned short  u_short;
+typedef unsigned int    u_int;
+typedef unsigned long   u_long;
+#define _U_CHAR_DEFINED
+#endif
+#endif
 
+
+#ifndef NJS_PTR_SIZE
 #if (__LP64__)
 #define NJS_64BIT       1
 #define NJS_PTR_SIZE    8
 #else
 #define NJS_64BIT       0
 #define NJS_PTR_SIZE    4
+#endif
+#else
+/* NJS_PTR_SIZE already computed by njs_auto_config.h (e.g. MinGW/LLP64). */
+#define NJS_64BIT       (NJS_PTR_SIZE == 8)
 #endif
 
 

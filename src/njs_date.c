@@ -22,7 +22,12 @@
 #define NJS_DATE_MSEC                   7
 
 
-#if (NJS_HAVE_TM_GMTOFF)
+#if (NJS_WINDOWS)
+
+#define njs_timezone(tm)                                                      \
+    njs_win_timezone(tm)
+
+#elif (NJS_HAVE_TM_GMTOFF)
 
 #define njs_timezone(tm)                                                      \
     ((tm)->tm_gmtoff)

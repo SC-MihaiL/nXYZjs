@@ -8,7 +8,32 @@
 #ifndef _NJS_UNIX_H_INCLUDED_
 #define _NJS_UNIX_H_INCLUDED_
 
+#if (defined(_WIN32) || defined(_WIN64) || defined(__MINGW32__) \
+     || defined(__MINGW64__))
+
+#define NJS_WINDOWS  1
+
+#include <njs_windows.h>
+
+static inline long
+njs_win_pagesize(void)
+{
+    SYSTEM_INFO si;
+
+    GetSystemInfo(&si);
+
+    return (long) si.dwPageSize;
+}
+
+#define njs_pagesize()      njs_win_pagesize()
+
+#else
+
+#define NJS_WINDOWS         0
+
 #define njs_pagesize()      getpagesize()
+
+#endif
 
 #if (NJS_LINUX)
 
@@ -47,7 +72,11 @@
 
 #include <unistd.h>
 
+#if !defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+/* On MinGW, <stdlib.h> (included above) already declares environ via a
+ * dllimport-decorated accessor; redeclaring it plainly conflicts. */
 extern char  **environ;
+#endif
 
 #if defined(PATH_MAX)
 #define NJS_MAX_PATH             PATH_MAX

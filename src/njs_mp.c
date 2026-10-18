@@ -289,7 +289,7 @@ njs_mp_destroy(njs_mp_t *mp)
             njs_free(block);
         }
 
-        njs_free(p);
+        njs_memalign_free(p);
     }
 
     njs_free(mp);
@@ -736,7 +736,7 @@ njs_mp_free(njs_mp_t *mp, void *p)
                 njs_free(block);
             }
 
-            njs_free(p);
+            njs_memalign_free(p);
 
             return;
 
@@ -876,7 +876,7 @@ njs_mp_chunk_free(njs_mp_t *mp, njs_mp_block_t *cluster,
     p = cluster->start;
 
     njs_free(cluster);
-    njs_free(p);
+    njs_memalign_free(p);
 
     return NULL;
 }

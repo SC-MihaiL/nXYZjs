@@ -2214,7 +2214,7 @@ ngx_js_http_keepalive_check_connection(ngx_connection_t *c)
         return NGX_DECLINED;
     }
 
-    n = recv(c->fd, buf, 1, MSG_PEEK);
+    n = recv(c->fd, (char *) buf, 1, MSG_PEEK);
 
     if (n == -1 && ngx_socket_errno == NGX_EAGAIN) {
         c->read->ready = 0;

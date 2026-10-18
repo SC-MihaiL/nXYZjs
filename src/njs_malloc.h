@@ -14,6 +14,7 @@
 
 NJS_EXPORT void *njs_zalloc(size_t size) NJS_MALLOC_LIKE;
 NJS_EXPORT void *njs_memalign(size_t alignment, size_t size) NJS_MALLOC_LIKE;
+NJS_EXPORT void njs_memalign_free(void *p);
 
 
 #endif /* _NJS_MALLOC_H_INCLUDED_ */

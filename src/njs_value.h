@@ -93,7 +93,7 @@ typedef struct njs_property_next_s    njs_property_next_t;
 union njs_value_s {
     struct {
         uint32_t                      magic32;
-        njs_value_type_t              type:8;  /* 5 bits */
+        uint8_t                       type:8;  /* 5 bits */
 
         /*
          * The truth field is set during value assignment and then can be
@@ -125,7 +125,7 @@ union njs_value_s {
 
     struct {
         uint32_t                      atom_id;
-        njs_value_type_t              type:8;  /* 5 bits */
+        uint8_t                       type:8;  /* 5 bits */
         uint8_t                       truth;
         uint8_t                       token_type;
         uint8_t                       token_id;
@@ -134,10 +134,20 @@ union njs_value_s {
 
     struct {
         uint32_t                      atom_id;
-        njs_value_type_t              type:8;  /* 5 bits */
+        uint8_t                       type:8;  /* 5 bits */
         uint8_t                       truth;
     };
 };
+
+
+/*
+ * njs_opaque_value_t is part of the public API and is used by the Nginx
+ * adapter as external storage for njs_value_t.  Some Windows compilers use
+ * a wider allocation unit for enum bit-fields, so catch a layout mismatch at
+ * compile time instead of allowing an ABI-dependent memory overwrite.
+ */
+typedef char  njs_value_opaque_size_check[
+    (sizeof(njs_value_t) == sizeof(njs_opaque_value_t)) ? 1 : -1];
 
 
 typedef struct {

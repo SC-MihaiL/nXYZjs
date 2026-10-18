@@ -21,6 +21,7 @@ NJS_TRY_QUICKJS=YES
 NJS_OPENSSL=YES
 NJS_LIBXML2=YES
 NJS_ZLIB=YES
+NJS_FS=YES
 
 NJS_PCRE=YES
 NJS_TRY_PCRE2=YES
@@ -57,6 +58,7 @@ do
         --no-openssl)                    NJS_OPENSSL=NO                      ;;
         --no-libxml2)                    NJS_LIBXML2=NO                      ;;
         --no-zlib)                       NJS_ZLIB=NO                         ;;
+         --no-fs)                         NJS_FS=NO                           ;;
 
         --no-pcre)                       NJS_PCRE=NO                         ;;
         --no-pcre2)                      NJS_TRY_PCRE2=NO                    ;;

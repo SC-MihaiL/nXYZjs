@@ -37,11 +37,13 @@ if [ $NJS_ZLIB = YES -a $NJS_HAVE_ZLIB = YES ]; then
 	. auto/module
 fi
 
-njs_module_name=njs_fs_module
-njs_module_incs=
-njs_module_srcs=external/njs_fs_module.c
+if [ $NJS_FS = YES ]; then
+	njs_module_name=njs_fs_module
+	njs_module_incs=
+	njs_module_srcs=external/njs_fs_module.c
 
-. auto/module
+	. auto/module
+fi
 
 njs_module_name=njs_query_string_module
 njs_module_incs=
